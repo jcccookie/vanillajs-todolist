@@ -3,8 +3,6 @@ const taskInput = document.querySelector('#task');
 const taskList = document.querySelector('.collection');
 const filter = document.querySelector('#filter');
 const clearBtn = document.querySelector('.clear-tasks');
-let checkCounter = 0;
-
 
 const loadEventListeners = () => {
    document.addEventListener('DOMContentLoaded', getTasks);
@@ -14,6 +12,7 @@ const loadEventListeners = () => {
    filter.addEventListener('keyup', filterTask);
    clearBtn.addEventListener('click', clearTask);
 }
+
 const getTasks = () => {
    let tasks;
 
@@ -103,22 +102,23 @@ const storeToLocalStorage = () => {
 }
 
 const checkTask = (e) => {
-   if(e.target.parentElement.classList.contains('check-item')){
-      checkCounter++;
-      if(checkCounter % 2 !== 0){
-         e.target.parentElement.parentElement.style.textDecoration = 'line-through';
+   const linkTag = e.target.parentElement;
+   if(linkTag.classList.contains('check-item')){
+      if(linkTag.parentElement.getAttribute('style') === null){
+         linkTag.parentElement.setAttribute('style', "text-decoration: line-through;")
       }
       else{
-         e.target.parentElement.parentElement.style.textDecoration = 'initial';
+         linkTag.parentElement.removeAttribute('style');
       }
    }
 }
 
 const removeTask = (e) => {
-   if(e.target.parentElement.classList.contains('delete-item')){
+   const linkTag = e.target.parentElement;
+   if(linkTag.classList.contains('delete-item')){
       if(confirm('Are you sure?')){
-         e.target.parentElement.parentElement.remove();
-         removeTaskFromLocalStorage(e.target.parentElement.parentElement);
+         linkTag.parentElement.remove();
+         removeTaskFromLocalStorage(linkTag.parentElement);
       }
    }
 }
